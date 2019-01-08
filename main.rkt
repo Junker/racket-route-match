@@ -63,7 +63,7 @@
 	(regexp
 		(string-append
 			"^"
-			(regexp-replace* #rx":[^\\/]+" path "([^/\\?]+)") 
+			(regexp-replace* #rx":[^\\/]+" path "([^/?]+)") 
 			"(?:\\?|$)")))
 
 (define (path-string-extract-keys path)
