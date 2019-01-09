@@ -46,8 +46,8 @@
 	(define path 
 		(path-string-add-leading-slash route))
 
-	(unless (list? constraints)
-		(raise-argument-error 'route-compile-constraints "list?" constraints))
+	(unless (even? (length constraints))
+		(raise-argument-error 'route-compile-constraints "wrong constraints argument" constraints))
 
 	(compiled-route
 		path 
