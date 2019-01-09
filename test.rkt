@@ -24,11 +24,17 @@
 		(route-match "blog/:name/page/:page" "/blog/racket/page/2")
 		'((:name . "racket") (:page . "2")))
 
+	(check-equal? 
+		(route-match "/blog/:name/*page/:page" "/blog/racket/super-page/2")
+		'((:name . "racket") (:page . "2")))
+
+	(check-equal? 
+		(route-match "/blog/*/page/:page" "/blog/racket/page/2")
+		'((:page . "2")))
 
 	(check-equal? 
 		(route-match "/blog/:name/page/:page" "https://racket-lang.org/blog/racket/page/2")
 		'((:name . "racket") (:page . "2")))
-
 
 	(check-equal? 
 		(route-match "/blog/:name/page/:page" (string->url "/blog/racket/page/2"))

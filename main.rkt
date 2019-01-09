@@ -63,11 +63,11 @@
 	(regexp
 		(string-append
 			"^"
-			(regexp-replace* #rx":[^\\/]+" path "([^/?]+)") 
+			(regexp-replace* #rx":[^/]+" (string-replace path "*" "[^/?]+") "([^/?]+)") 
 			"(?:\\?|$)")))
 
 (define (path-string-extract-keys path)
-	(map string->symbol (regexp-match* #rx":[^\\/]+" path #:match-select car)))
+	(map string->symbol (regexp-match* #rx":[^/]+" path #:match-select car)))
 
 (define (url-string-absolute? url)
 	(regexp-match? #rx"^https?:?//" url))
