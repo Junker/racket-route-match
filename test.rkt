@@ -6,8 +6,24 @@
 
 (test-case "main"
 	(check-equal? 
+		(route-match "/blog/name/page/page" "/blog/name/page/page")
+		'())
+
+	(check-true 
+		(void? (route-match "/blog/name/page/page" "/another/route")))
+
+	(check-equal? 
 		(route-match "/blog/:name/page/:page" "/blog/racket/page/2")
 		'((:name . "racket") (:page . "2")))
+
+	(check-equal? 
+		(route-match "/blog/:name/page/:page" "blog/racket/page/2")
+		'((:name . "racket") (:page . "2")))
+
+	(check-equal? 
+		(route-match "blog/:name/page/:page" "/blog/racket/page/2")
+		'((:name . "racket") (:page . "2")))
+
 
 	(check-equal? 
 		(route-match "/blog/:name/page/:page" "https://racket-lang.org/blog/racket/page/2")
