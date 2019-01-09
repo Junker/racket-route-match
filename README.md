@@ -58,5 +58,16 @@ When compiling a route, you can specify a map of regular expressions to use for 
 (define user-route (route-compile "/blog/:name/page/:page" ':page #px"\\d+"))
 (route-match user-route "/blog/racket/page/2") ; => '((:name . "racket") (:page . "2"))
 ```
-
 Note that regular expression escape sequences (like \d) need to be double-escaped when placed inline in a string.
+
+## Benchmark 
+compiled vs non-compiled matches:
+
+```racket
+(time (for ([i (in-range 100000)]) (route-match "/blog/:name/page*/:page" "/blog/racket/page123/2")))
+; => cpu time: 8279 real time: 8283 gc time: 42
+(define user-route (route-compile "/blog/:name/page*/:page"))
+(time (for ([i (in-range 100000)]) (route-match user-route "/blog/racket/page123/2")))
+; => cpu time: 247 real time: 246 gc time: 3
+``` 
+
