@@ -53,8 +53,7 @@
 		(route-match user-route2 (string->url "/blog/racket/page/2"))
 		'((:name . "racket") (:page . "2")))
 
-	(check-not-equal? 
-		(route-match user-route2 (string->url "/blog/racket/page/qwe"))
-		'((:name . "racket") (:page . "qwe"))))
+	(check-true 
+		(void? (route-match user-route2 (string->url "/blog/racket/page/qwe")))))
 
 	
