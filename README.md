@@ -66,6 +66,7 @@ compiled vs non-compiled matches:
 ```racket
 (time (for ([i (in-range 100000)]) (route-match "/blog/:name/page*/:page" "/blog/racket/page123/2")))
 ; => cpu time: 8279 real time: 8283 gc time: 42
+
 (define user-route (route-compile "/blog/:name/page*/:page"))
 (time (for ([i (in-range 100000)]) (route-match user-route "/blog/racket/page123/2")))
 ; => cpu time: 247 real time: 246 gc time: 3
