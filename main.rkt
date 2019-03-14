@@ -67,7 +67,7 @@
 			"(?:\\?|$)")))
 
 (define (path-string-extract-keys path)
-	(map string->symbol (regexp-match* #rx":[^/]+" path #:match-select car)))
+	(map string->symbol (regexp-match* #rx":([^/]+)" path #:match-select cadr)))
 
 (define (url-string-absolute? url)
 	(regexp-match? #rx"^https?:?//" url))
