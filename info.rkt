@@ -1,4 +1,4 @@
-1#lang info
+#lang info
 
 (define collection "racket-route-match")
 (define version "0.0.3")
