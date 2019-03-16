@@ -7,7 +7,7 @@
 (struct compiled-route (source regexp keys constraints absolute?))
 
 (define (route-match route request)
-	(let 
+	(let*  
 		([croute
 			(cond
 				[(compiled-route? route) route]
@@ -15,30 +15,25 @@
 		[path 
 			(cond 
 				[(url? request) (path->string (url->path request))]
-				[(string? request) (path-string-add-leading-slash (if (url-string-absolute? request) (url-string-abs-to-rel request) request))])])
-		
+				[(string? request) (path-string-add-leading-slash (if (url-string-absolute? request) (url-string-abs-to-rel request) request))])]
+		[regx (compiled-route-regexp croute)]
+		[constraints (compiled-route-constraints croute)]
+		[keys (compiled-route-keys croute)]
+		[matches (regexp-match* regx path #:match-select cdr)])
 
-		(define regx (compiled-route-regexp croute))
-		(define constraints (compiled-route-constraints croute))
-		(define keys (compiled-route-keys croute))
-
-		(define matches (regexp-match* regx path #:match-select cdr))
-
-
-		(unless (empty? matches)
-			(set! matches (car matches))
-
-			(define constraints_match?
-				(andmap (lambda (constraint)
-					(let*
-						([constraint_key (first constraint)]
-						[constraint_regx (second constraint)]
-						[key_idx (index-of keys constraint_key eq?)])
-							(or (false? key_idx) (regexp-match? constraint_regx (list-ref matches key_idx)))))
-					constraints))
-
-			(when constraints_match? 
-				(map cons keys matches)))))
+		(let ([match? (if (empty? matches)
+						#f
+						(andmap (lambda (constraint)
+								(let*
+									([matches (car matches)]
+									 [constraint_key (first constraint)]
+									 [constraint_regx (second constraint)]
+									 [key_idx (index-of keys constraint_key eq?)])
+										(or (false? key_idx) (regexp-match? constraint_regx (list-ref matches key_idx)))))
+								constraints))])
+			(if match? 
+				(map cons keys (car matches))
+				#f))))
 
 
 

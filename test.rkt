@@ -9,8 +9,8 @@
 		(route-match "/blog/name/page/page" "/blog/name/page/page")
 		'())
 
-	(check-true 
-		(void? (route-match "/blog/name/page/page" "/another/route")))
+	(check-false 
+		(route-match "/blog/name/page/page" "/another/route"))
 
 	(check-equal? 
 		(route-match "/blog/:name/page/:page" "/blog/racket/page/2")
@@ -31,6 +31,10 @@
 	(check-equal? 
 		(route-match "/blog/:name/**/:page" "/blog/racket/super/buper/page/2")
 		'((name . "racket") (page . "2")))
+
+	(check-equal? 
+		(route-match "/blog/:name/**" "/blog/racket/super/buper/page/2")
+		'((name . "racket")))
 
 	(check-equal? 
 		(route-match "/blog/*/page/:page" "/blog/racket/page/2")
@@ -57,7 +61,6 @@
 		(route-match user-route2 (string->url "/blog/racket/page/2"))
 		'((name . "racket") (page . "2")))
 
-	(check-true 
-		(void? (route-match user-route2 (string->url "/blog/racket/page/qwe")))))
-
+	(check-false 
+		(route-match user-route2 (string->url "/blog/racket/page/qwe"))))
 	
