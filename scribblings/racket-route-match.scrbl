@@ -27,9 +27,8 @@ Example of usage:
 (route-match 
   "/blog/:name/page/:page" (string->url "/blog/racket/page/2")) 
 ; => '((name . "racket") (page . "2"))
-```
-with wildcards
-```racket
+
+; with wildcards
 
 (route-match 
   "/blog/*/page/:page" "/blog/racket/page/2")
@@ -42,15 +41,13 @@ with wildcards
 (route-match 
   "/blog/:name/**/:page" "/blog/racket/super/buper/page/2")
 ; => '((name . "racket") (page . "2"))
-```
 
-with request from web-server
-```racket
+; with request from web-server
 ; example request from web-server/servlet
 (define req 
   (make-request #"GET" 
     (string->url "/blog/racket/page/2") 
-     empty (delay empty) #f "1.2.3.4" 80 "4.3.2.1"))) 
+     empty (delay empty) #f "1.2.3.4" 80 "4.3.2.1")) 
 
 (route-match 
   "/blog/:name/page/:page" (request-uri req)) 
@@ -74,7 +71,7 @@ with request from web-server
 Matches route with URL
 
 @racketblock[
- (define (route-match route request)
+ (define (route-match route request))
 ]
 
 route - string with params (eg. "/blog/:name/page/:page" )
@@ -85,7 +82,7 @@ request - url for compare (eg. "/blog/racket/page/2")
 Compiles route for additional performance
 
 @racketblock[
- (define (route-compile route . constraints)
+ (define (route-compile route . constraints))
 ]
 
 route - string with params (eg. "/blog/:name/page/:page" )
