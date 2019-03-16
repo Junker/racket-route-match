@@ -1,7 +1,7 @@
 1#lang info
 
 (define collection "racket-route-match")
-(define version "0.0.2")
+(define version "0.0.3")
 (define deps '("base" "rackunit-lib"))
 (define build-deps '("scribble-lib" "racket-doc" "rackunit-lib"))
 (define scribblings '(("scribblings/racket-route-match.scrbl" ())))

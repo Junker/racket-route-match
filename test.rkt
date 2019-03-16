@@ -29,6 +29,10 @@
 		'((name . "racket") (page . "2")))
 
 	(check-equal? 
+		(route-match "/blog/:name/**/:page" "/blog/racket/super/buper/page/2")
+		'((name . "racket") (page . "2")))
+
+	(check-equal? 
 		(route-match "/blog/*/page/:page" "/blog/racket/page/2")
 		'((page . "2")))
 

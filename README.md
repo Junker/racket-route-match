@@ -31,6 +31,10 @@ with wildcards
 (route-match 
   "/blog/:name/page*/:page" "/blog/racket/page-super/2")
 ; => '((name . "racket") (page . "2"))
+
+(route-match 
+  "/blog/:name/**/:page" "/blog/racket/super/buper/page/2")
+; => '((name . "racket") (page . "2"))
 ```
 
 with request from web-server
