@@ -44,10 +44,19 @@
 		(route-match "/blog/:name/page/:page" "https://racket-lang.org/blog/racket/page/2")
 		'((name . "racket") (page . "2")))
 
+	(check-exn exn:fail:contract? 
+		(lambda ()
+			(route-match "/blog/:name/page/:page" 123)
+			'((name . "racket") (page . "2"))))
+
 	(check-equal? 
 		(route-match "/blog/:name/page/:page" (string->url "/blog/racket/page/2"))
 		'((name . "racket") (page . "2")))
 		
+	(check-exn exn:fail:contract? 
+		(lambda ()
+			(route-compile 112233)))
+
 	(define user-route (route-compile "/blog/:name/page/:page"))
 
 	(check-equal? 

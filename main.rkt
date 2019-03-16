@@ -6,7 +6,8 @@
 
 (struct compiled-route (source regexp keys constraints absolute?))
 
-(define (route-match route request)
+(define/contract (route-match route request)
+	((or/c string? compiled-route?) (or/c url? string?) . -> . (or/c list? boolean?)) ;contract
 	(let*  
 		([croute
 			(cond
@@ -30,14 +31,15 @@
 									 [constraint_regx (second constraint)]
 									 [key_idx (index-of keys constraint_key eq?)])
 										(or (false? key_idx) (regexp-match? constraint_regx (list-ref matches key_idx)))))
-								constraints))])
+							constraints))])
 			(if match? 
 				(map cons keys (car matches))
 				#f))))
 
 
 
-(define (route-compile route . constraints)
+(define/contract (route-compile route . constraints)
+	(->* (string?) #:rest (listof (or/c symbol? regexp?)) compiled-route?) ;contract
 	(define path 
 		(path-string-add-leading-slash route))
 
