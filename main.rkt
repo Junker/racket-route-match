@@ -38,19 +38,17 @@
 
 
 
-(define/contract (route-compile route . constraints)
-	(->* (string?) #:rest (listof (or/c symbol? regexp?)) compiled-route?) ;contract
+(define/contract (route-compile route [constraints '()])
+	(->* (string?) ((listof pair?)) compiled-route?) ;contract
+
 	(define path 
 		(path-string-add-leading-slash route))
-
-	(unless (even? (length constraints))
-		(raise-argument-error 'route-compile-constraints "wrong constraints argument" constraints))
 
 	(compiled-route
 		path 
 		(path-string->regexp path) 
 		(path-string-extract-keys path) 
-		(list-splitparts constraints 2) 
+		constraints 
 		(url-string-absolute? path)))
 
 
@@ -77,10 +75,4 @@
 (define (url-string-abs-to-rel url)
 	(regexp-replace #rx"^https?://[^/]+" url ""))
 
-(define (list-splitparts lst num)
-  (letrec ((recurse
-            (lambda (lst num acc)
-              (if (null? lst)
-                acc
-                (recurse (drop lst num) num (append acc (list (take lst num))))))))
-    (recurse lst num '())))
+

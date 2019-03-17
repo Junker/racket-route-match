@@ -60,7 +60,7 @@ Example of usage:
 ; => '((name . "racket") (page . "2"))
 
 ; When compiling a route, you can specify a map of regular expressions to use for different keywords. This allows more specific routing:
-(define user-route (route-compile "/blog/:name/page/:page" 'page #px"\\d+"))
+(define user-route (route-compile "/blog/:name/page/:page" '((page #px"\\d+"))))
 (route-match user-route "/blog/racket/page/2") ; => '((name . "racket") (page . "2"))
 ]
 

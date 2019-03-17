@@ -59,7 +59,7 @@ with request from web-server
 
 When compiling a route, you can specify a map of regular expressions to use for different keywords. This allows more specific routing:
 ```racket
-(define user-route (route-compile "/blog/:name/page/:page" 'page #px"\\d+"))
+(define user-route (route-compile "/blog/:name/page/:page" '((page #px"\\d+"))))
 (route-match user-route "/blog/racket/page/2") ; => '((name . "racket") (page . "2"))
 ```
 Note that regular expression escape sequences (like \d) need to be double-escaped when placed inline in a string.

@@ -64,7 +64,7 @@
 		'((name . "racket") (page . "2")))
 
 	
-	(define user-route2 (route-compile "/blog/:name/page/:page" 'page #px"\\d+"))
+	(define user-route2 (route-compile "/blog/:name/page/:page" '((page #px"\\d+"))))
 
 	(check-equal? 
 		(route-match user-route2 (string->url "/blog/racket/page/2"))
