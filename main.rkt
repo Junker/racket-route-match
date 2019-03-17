@@ -39,7 +39,7 @@
 
 
 (define/contract (route-compile route [constraints '()])
-	(->* (string?) ((listof pair?)) compiled-route?) ;contract
+	((string?) ((listof pair?)) . ->* . compiled-route?) ;contract
 
 	(define path 
 		(path-string-add-leading-slash route))

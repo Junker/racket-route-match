@@ -82,8 +82,8 @@ request - url for compare (eg. "/blog/racket/page/2")
 Compiles route for additional performance
 
 @racketblock[
- (define (route-compile route . constraints))
+ (define (route-compile route [constraints '()]))
 ]
 
 route - string with params (eg. "/blog/:name/page/:page" )
-constraints - condition regexp for params (eg. 'page #px"\\d+") 
+constraints - condition regexp for params (eg. '((page #px"\\d+")) ) 
