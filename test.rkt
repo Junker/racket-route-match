@@ -25,6 +25,20 @@
 		'((name . "racket") (page . "2")))
 
 	(check-equal? 
+		(route-match "/blog/:name/page/:page" "https://racket-lang.org/blog/racket/page/2")
+		'((name . "racket") (page . "2")))
+
+	(check-exn exn:fail:contract? 
+		(lambda ()
+			(route-match "/blog/:name/page/:page" 123)
+			'((name . "racket") (page . "2"))))
+
+	(check-equal? 
+		(route-match "/blog/:name/page/:page" (string->url "/blog/racket/page/2"))
+		'((name . "racket") (page . "2"))))
+
+(test-case "wildcard"
+	(check-equal? 
 		(route-match "/blog/:name/*page/:page" "/blog/racket/super-page/2")
 		'((name . "racket") (page . "2")))
 
@@ -38,32 +52,15 @@
 
 	(check-equal? 
 		(route-match "/blog/*/page/:page" "/blog/racket/page/2")
-		'((page . "2")))
+		'((page . "2"))))
 
-	(check-equal? 
-		(route-match "/blog/:name/page/:page" "https://racket-lang.org/blog/racket/page/2")
-		'((name . "racket") (page . "2")))
-
-	(check-exn exn:fail:contract? 
-		(lambda ()
-			(route-match "/blog/:name/page/:page" 123)
-			'((name . "racket") (page . "2"))))
-
-	(check-equal? 
-		(route-match "/blog/:name/page/:page" (string->url "/blog/racket/page/2"))
-		'((name . "racket") (page . "2")))
-		
-	(check-exn exn:fail:contract? 
-		(lambda ()
-			(route-compile 112233)))
-
+(test-case "compiled-route"
 	(define user-route (route-compile "/blog/:name/page/:page"))
 
 	(check-equal? 
 		(route-match user-route (string->url "/blog/racket/page/2"))
 		'((name . "racket") (page . "2")))
 
-	
 	(define user-route2 (route-compile "/blog/:name/page/:page" '((page #px"\\d+"))))
 
 	(check-equal? 
@@ -71,5 +68,13 @@
 		'((name . "racket") (page . "2")))
 
 	(check-false 
-		(route-match user-route2 (string->url "/blog/racket/page/qwe"))))
+		(route-match user-route2 (string->url "/blog/racket/page/qwe")))
+
+	(check-exn exn:fail:contract? 
+		(lambda ()
+			(route-compile 112233)))
+
+	(check-exn exn:fail:contract? 
+		(lambda ()
+			(route-compile "/blog/:name/page/:page" '(("page" "\\d+"))))))
 	
